@@ -1,17 +1,20 @@
 import React, {Component} from 'react'
-
+import TodoCard from './TodoCard'
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       isClicked: true,
       inputValue: "",
       listOfTodos: []
     }
+
+
+    
   }
 
   handleClick = () => {
@@ -30,30 +33,37 @@ class App extends Component {
     this.setState({inputValue: ""})
   }
 
-render() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.inputValue} onChange={this.handleChange}></input>
-          <button type="submit">Submit</button>
-        </form>
-        <ol>{this.state.listOfTodos.map((todo, index) => {
-          return <li key={index}>{todo}</li>
-        })}</ol>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  deleteTodo = (index) => {
+    let copyOfList = this.state.listOfTodos
+    copyOfList.splice(index, 1)
+    this.setState({listOfTodos: [...copyOfList]})
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" value={this.state.inputValue} onChange={this.handleChange}></input>
+            <button type="submit">Submit</button>
+          </form>
+          <ol>{this.state.listOfTodos.map((todo, index) => {
+            return  <TodoCard key={index} index={index} title={todo} clickToRemove={this.deleteTodo}/>
+          })}</ol>
+          <a
+            className="App-link"
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {this.props.name}
+          </a>
+        </header>
+      </div>
+    );
+  }
+
 
   
 }
